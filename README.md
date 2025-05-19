@@ -19,7 +19,7 @@ MRI Insight is a user-friendly platform that allows healthcare professionals to 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/mri-insight.git
+git clone https://github.com/KOSASIH/mri-insight.git
 cd mri-insight
 ```
 
