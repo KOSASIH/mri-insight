@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRI Insight - Brain Tumor Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header text-center">
+        <div class="container">
+            <h1>MRI Insight</h1>
+            <p class="lead">Advanced Brain MRI Analysis Platform for Healthcare Professionals</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Upload Section -->
+        <section class="upload-container text-center">
+            <h2>Upload MRI Scan</h2>
+            <p>Upload a brain MRI scan image for instant analysis and tumor classification</p>
+            
+            <form action="/upload" method="post" enctype="multipart/form-data" class="mt-4">
+                <div class="mb-3">
+                    <input class="form-control" type="file" id="formFile" name="file" accept=".png,.jpg,.jpeg,.tif,.tiff" onchange="previewImage(this)">
+                </div>
+                
+                <div class="preview-container" id="preview-container">
+                    <img id="image-preview" src="#" alt="Image Preview">
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-lg" id="upload-btn">Analyze MRI Scan</button>
+            </form>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card feature-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Instant Analysis</h5>
+                            <p class="card-text">Get immediate results with our advanced AI algorithms trained on thousands of MRI scans.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card feature-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Tumor Classification</h5>
+                            <p class="card-text">Accurate classification of tumor types with confidence scores to aid in diagnosis.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card feature-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Secure & Private</h5>
+                            <p class="card-text">All uploads are encrypted and processed securely, ensuring patient data privacy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <div class="container">
+            <p>&copy; 2025 MRI Insight. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

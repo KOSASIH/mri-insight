@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRI Analysis Results - MRI Insight</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <style>
+        .mri-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header text-center">
+        <div class="container">
+            <h1>MRI Insight</h1>
+            <p class="lead">Analysis Results</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Result Section -->
+        <section class="result-container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Uploaded MRI Scan</h3>
+                    <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="Uploaded MRI Scan" class="mri-image img-fluid">
+                </div>
+                <div class="col-md-6">
+                    <h3>Analysis Results</h3>
+                    
+                    <!-- Tumor Detection Result -->
+                    <div class="result-card {{ 'result-positive' if prediction.tumor_detected else 'result-negative' }}">
+                        <h4>Tumor Detection</h4>
+                        <p class="fs-5">
+                            {% if prediction.tumor_detected %}
+                                <span class="text-danger fw-bold">Tumor Detected</span>
+                            {% else %}
+                                <span class="text-success fw-bold">No Tumor Detected</span>
+                            {% endif %}
+                        </p>
+                        
+                        <!-- Confidence Score -->
+                        <div>
+                            <p class="mb-1">Confidence: {{ "%.2f"|format(prediction.confidence * 100) }}%</p>
+                            <div class="progress confidence-bar">
+                                <div class="progress-bar {{ 'bg-danger' if prediction.tumor_detected else 'bg-success' }}" 
+                                     role="progressbar" 
+                                     style="width: {{ prediction.confidence * 100 }}%" 
+                                     aria-valuenow="{{ prediction.confidence * 100 }}" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tumor Type (if detected) -->
+                    {% if prediction.tumor_detected and prediction.tumor_type != 'N/A' %}
+                    <div class="result-card">
+                        <h4>Tumor Classification</h4>
+                        <p class="fs-5">Type: <span class="fw-bold">{{ prediction.tumor_type }}</span></p>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Location (if detected) -->
+                    {% if prediction.tumor_detected and prediction.location != 'N/A' %}
+                    <div class="result-card">
+                        <h4>Tumor Location</h4>
+                        <p class="fs-5">Location: <span class="fw-bold">{{ prediction.location }}</span></p>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Disclaimer -->
+                    <div class="alert alert-warning mt-3">
+                        <h5>Important Note</h5>
+                        <p>This analysis is provided as a decision support tool and should not replace professional medical judgment. Always consult with a qualified healthcare provider for diagnosis and treatment decisions.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+                <a href="/" class="btn btn-secondary btn-lg btn-back">
+                    <i class="bi bi-arrow-left"></i> Back to Upload
+                </a>
+                <button class="btn btn-primary btn-lg btn-download" onclick="window.print()">
+                    <i class="bi bi-download"></i> Print/Save Report
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <div class="container">
+            <p>&copy; 2025 MRI Insight. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
